@@ -1,6 +1,14 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 function CitySelector(props) {
+	const apiKey = '73689869a5df58ba9b5f655b0fdac060';
+	const {
+		setCitySelectorIsVisible,
+		setWeatherDashboardIsVisible,
+		setCurrentWeather,
+		setWeatherForecast,
+	} = props;
 	const [isError, setIsError] = useState(false);
 
 	function handleCurrentCityClick() {
@@ -9,8 +17,14 @@ function CitySelector(props) {
 		const isValidCity = validateCurrentCity(currentCity);
 
 		if (isValidCity) {
-			props.setCurrentCity(currentCity);
-			props.setcitySelectorIsVisible(false);
+			setCitySelectorIsVisible(false);
+			setWeatherDashboardIsVisible(true);
+
+			const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${currentCity}&appid=${apiKey}&units=metric`;
+			const weatherForecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${currentCity}&appid=${apiKey}&cnt=5&units=metric`;
+
+			getCurrentWeather(currentWeatherUrl);
+			getWeatherForecast(weatherForecastUrl);
 		} else {
 			setIsError(true);
 		}
@@ -22,9 +36,31 @@ function CitySelector(props) {
 		return city.match(regex) ? true : false;
 	}
 
+	async function getCurrentWeather(currentWeatherUrl) {
+		await axios
+			.get(currentWeatherUrl)
+			.then((response) => {
+				setCurrentWeather(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
+	async function getWeatherForecast(weatherForecastUrl) {
+		await axios
+			.get(weatherForecastUrl)
+			.then((response) => {
+				setWeatherForecast(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
 	return (
 		<div className='city-selector-wrapper'>
-			<h1 className='h1 mb-3'>Please enter a city</h1>
+			<h1 className='h1 mb-3 text-center'>Please enter a city</h1>
 			<form className='d-flex align-items-center justify-content-center'>
 				<div className='form-floating me-3'>
 					<input

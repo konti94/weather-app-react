@@ -5,6 +5,8 @@ function WeatherDashboard(props) {
 		currentWeather,
 		weatherForecast,
 	} = props;
+	let currentWeatherIconName;
+	let currentWeatherDesc;
 
 	console.log('currentWeather', currentWeather);
 	console.log('weatherForecast', weatherForecast);
@@ -12,6 +14,27 @@ function WeatherDashboard(props) {
 	function handleBackClick() {
 		setCitySelectorIsVisible(true);
 		setWeatherDashboardIsVisible(false);
+	}
+
+	currentWeather.weather?.forEach((item) => {
+		selectCurrentWeatherIcon(item);
+		currentWeatherDesc = item?.description;
+	});
+
+	function selectCurrentWeatherIcon(item) {
+		if (item?.description.includes('cloud')) {
+			currentWeatherIconName = 'cloud';
+		} else if (item?.description.includes('rain')) {
+			currentWeatherIconName = 'rain';
+		} else if (item?.description.includes('snow')) {
+			currentWeatherIconName = 'snow';
+		} else if (item?.description.includes('freeze')) {
+			currentWeatherIconName = 'freeze';
+		} else if (item?.description.includes('storm')) {
+			currentWeatherIconName = 'storm';
+		} else {
+			currentWeatherIconName = 'sun';
+		}
 	}
 
 	return (
@@ -38,7 +61,23 @@ function WeatherDashboard(props) {
 				</svg>
 				Back
 			</button>
-			<div className='weather-dashboard'></div>
+			<div className='weather-dashboard'>
+				<div className='current-box'>
+					<h2>{currentWeather?.name}</h2>
+					<div className='current-desc'>{currentWeatherDesc}</div>
+					<img
+						className='current-icon'
+						src={`/assets/icons/${currentWeatherIconName}.png`}
+						alt=''
+					/>
+					<div className='d-flex align-items-center justify-content-between'>
+						<span></span>
+						<span>{currentWeather?.main?.temp}</span>
+						<span>{currentWeather?.wind?.speed * 3.6}</span>
+					</div>
+				</div>
+				<div className='forecast-box'></div>
+			</div>
 		</>
 	);
 }

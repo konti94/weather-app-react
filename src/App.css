@@ -68,6 +68,53 @@
 	width: 128px;
 }
 
+.forecast-box {
+	align-items: center;
+	display: flex;
+	gap: 0 8px;
+	justify-content: center;
+	overflow-x: auto;
+	padding: 48px 32px 24px;
+}
+
+.forecast-card {
+	align-items: center;
+	background-color: rgba(255, 255, 255, 0.85);
+	border-radius: 16px;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	display: flex;
+	flex-direction: column;
+	height: 80px;
+	justify-content: center;
+	margin-bottom: 8px;
+	-ms-overflow-style: none;
+	position: relative;
+	scrollbar-width: none;
+	width: 80px;
+}
+
+.forecast-card::-webkit-scrollbar {
+	display: none;
+}
+
+.forecast-card img {
+	bottom: 24px;
+	height: 48px;
+	left: 15px;
+	position: absolute;
+	width: 48px;
+	z-index: 1;
+}
+
+.forecast-card span {
+	font-size: 20px;
+}
+
+.dayname {
+	font-size: 12px;
+	text-align: center;
+}
+
 @media screen and (min-width: 768px) {
 	.city-selector-wrapper {
 		padding: 16px 32px;
